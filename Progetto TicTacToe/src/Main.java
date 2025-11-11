@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board();
+        Game game = new Game(); // crea l'oggetto Game
+        game.play();            // avvia il gioco
     }
 }

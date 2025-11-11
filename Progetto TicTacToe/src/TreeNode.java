@@ -7,34 +7,31 @@ public class TreeNode {
     private Move moveFromParent;
 
     public TreeNode(Board b, char player) {
-        this.board = b;
+        board = b;
         this.player = player;
-        this.children = new TreeNode[9];
-        this.numChildren = 0;
-        this.value = 0;
-        this.moveFromParent = null;
+        children = new TreeNode[9];
+        numChildren = 0;
+        value = 0;
+        moveFromParent = null;
     }
 
     public Board getBoard() { return board; }
-    public void setBoard(Board b) { this.board = b; }
-
     public char getPlayer() { return player; }
-    public void setPlayer(char p) { this.player = p; }
-
     public TreeNode[] getChildren() { return children; }
-
     public int getNumChildren() { return numChildren; }
-    public void setNumChildren(int n) { this.numChildren = n; }
+    public int getValue() { return value; }
+    public Move getMoveFromParent() { return moveFromParent; }
+
+    public void setBoard(Board b) { board = b; }
+    public void setPlayer(char p) { player = p; }
+    public void setNumChildren(int n) { numChildren = n; }
+    public void setValue(int v) { value = v; }
+    public void setMoveFromParent(Move m) { moveFromParent = m; }
 
     public void addChild(TreeNode child) {
         if (numChildren < 9) {
-            children[numChildren++] = child;
+            children[numChildren] = child;
+            numChildren++;
         }
     }
-
-    public int getValue() { return value; }
-    public void setValue(int v) { this.value = v; }
-
-    public Move getMoveFromParent() { return moveFromParent; }
-    public void setMoveFromParent(Move m) { this.moveFromParent = m; }
 }
