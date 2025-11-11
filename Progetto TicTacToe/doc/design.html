@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design & Codice — Tris Minimax (Java)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="header">
+    <div class="logo">TR</div>
+    <div class="title">
+      <h1>Design & Codice</h1>
+      <p class="lead">Spiegazione completa del codice Java del Tris con Minimax</p>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="design.html" class="active">Design & Codice</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="card">
+      <h2>Classi principali</h2>
+      <ul>
+        <li><strong>Board:</strong> gestisce la griglia, le mosse e controlla vittoria/pareggio.</li>
+        <li><strong>Move:</strong> rappresenta una mossa con riga, colonna e valore Minimax.</li>
+        <li><strong>Game:</strong> implementa l’algoritmo Minimax ricorsivo.</li>
+        <li><strong>TreeNode:</strong> nodo dell’albero di gioco, contiene board, player, figli, valore e mossa da genitore.</li>
+        <li><strong>Tree:</strong> costruisce l’albero di gioco e calcola i valori Minimax per ogni nodo.</li>
+        <li><strong>Main:</strong> alterna X e O fino a vittoria o pareggio.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Classe Board</h2>
+      <p>Gestisce la griglia, mosse e controlli di vittoria.</p>
+      <ul>
+        <li><code>Board()</code>: crea una griglia vuota 3x3.</li>
+        <li><code>Board(Board other)</code>: copia una griglia esistente.</li>
+        <li><code>isFull()</code>: controlla se la griglia è piena.</li>
+        <li><code>Mossa(Move move, char player)</code>: piazza il simbolo del giocatore se la cella è libera.</li>
+        <li><code>checkWin(char player)</code>: controlla righe, colonne e diagonali per la vittoria.</li>
+        <li><code>CaselleVuote()</code>: conta le celle vuote.</li>
+        <li><code>CasellaVuota(int r,int c)</code>: controlla se una cella specifica è vuota.</li>
+        <li><code>stampa()</code>: stampa la griglia su console.</li>
+        <li>Getter e setter: <code>getGriglia()</code> e <code>setGriglia()</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Classe Move</h2>
+      <p>Rappresenta una mossa e il suo valore Minimax.</p>
+      <ul>
+        <li><code>Move(int row, int col)</code>: crea una mossa senza valore.</li>
+        <li><code>Move(int row, int col, int value)</code>: crea una mossa con valore.</li>
+        <li>Getter e setter per <code>row</code>, <code>col</code> e <code>value</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Classe Game</h2>
+      <p>Contiene l’algoritmo Minimax ricorsivo per calcolare la mossa ottimale.</p>
+      <ol>
+        <li>Se la partita è finita (vittoria o pareggio), ritorna <code>null</code>.</li>
+        <li>Per ogni cella vuota, simula la mossa del giocatore corrente creando una copia della griglia.</li>
+        <li>Chiama ricorsivamente <code>minimax</code> per l’altro giocatore.</li>
+        <li>Valuta la mossa: +1 se X vince, -1 se O vince, 0 se pareggio.</li>
+        <li>Se il giocatore è X, sceglie la mossa con valore massimo.</li>
+        <li>Se il giocatore è O, sceglie la mossa con valore minimo.</li>
+        <li>Restituisce la mossa migliore con il relativo valore.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Classe TreeNode</h2>
+      <p>Rappresenta un nodo dell’albero di gioco.</p>
+      <ul>
+        <li><code>Board board</code>: stato della griglia in quel nodo.</li>
+        <li><code>char player</code>: giocatore che deve muovere in quel nodo.</li>
+        <li><code>TreeNode[] children</code>: array di massimo 9 figli.</li>
+        <li><code>numChildren</code>: contatore dei figli aggiunti.</li>
+        <li><code>int value</code>: valore Minimax del nodo.</li>
+        <li><code>Move moveFromParent</code>: mossa effettuata per arrivare a questo nodo.</li>
+        <li>Getter e setter per tutte le proprietà.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Classe Tree</h2>
+      <p>Costruisce l’albero di gioco e calcola i valori Minimax.</p>
+      <ol>
+        <li>Il costruttore crea la radice con la board iniziale e il giocatore di partenza.</li>
+        <li><code>buildTree(TreeNode node)</code>: metodo ricorsivo che costruisce l’albero.</li>
+        <li>Se il nodo è terminale (vittoria o pareggio), assegna il valore corretto.</li>
+        <li>Per ogni cella vuota, crea un nuovo nodo figlio simulando la mossa.</li>
+        <li>Chiama <code>buildTree</code> ricorsivamente sul figlio.</li>
+        <li>Aggiorna il valore del nodo corrente in base al giocatore (X massimizza, O minimizza).</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Classe Main</h2>
+      <p>Gestisce il loop di gioco X (utente) vs O (IA).</p>
+      <ol>
+        <li>Stampa la griglia ad ogni turno.</li>
+        <li>Controlla se X o O hanno vinto oppure se la griglia è piena.</li>
+        <li>Se è il turno di X, chiede all’utente la riga e colonna.</li>
+        <li>Se è il turno di O, chiama <code>Game.minimax</code> per scegliere la mossa migliore.</li>
+        <li>Alterna i giocatori fino a fine partita.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Tris — Design</div>
+    <div class="muted">WeiSheng Chen</div>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tris & Minimax</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="header">
+    <div class="logo">TR</div>
+    <div class="title">
+      <h1>Tris (Tic-Tac-Toe) & Minimax</h1>
+      <p class="lead">Gioca contro un'IA ottimale che utilizza Minimax puro!</p>
+    </div>
+    <nav class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="design.html">Design & Codice</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="card demo-grid">
+      <!-- Colonna Gioco -->
+      <div class="game-column">
+        <h2>Gioca ora</h2>
+        <div class="board-wrapper">
+          <div id="board" class="board"></div>
+          <div class="controls">
+            <button id="resetBtn" class="btn">Reset</button>
+            <div id="status" class="status muted">Turno: X</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonna Spiegazione -->
+      <div class="info-column">
+        <h2>Come funziona il codice</h2>
+        <ul>
+          <li>Il gioco usa una griglia 3x3 e i turni alternati X / O.</li>
+          <li>L'utente è sempre X (Max), il computer è O (Min).</li>
+          <li>Valori del Minimax: +1 = vittoria X, -1 = vittoria O, 0 = pareggio.</li>
+          <li>L'algoritmo ricorsivo esplora tutte le mosse possibili fino alla fine.</li>
+          <li>Max sceglie la mossa con valore massimo, Min quella con valore minimo.</li>
+          <li>La funzione <code>minimaxNode</code> ritorna la mossa ottimale per il giocatore corrente.</li>
+        </ul>
+        <p>Puoi osservare come ogni mossa viene calcolata dall'IA e come il turno cambia da X a O.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Tris — Demo Interattiva</div>
+    <div class="muted">Realizzato da WeiSheng Chen</div>
+  </footer>
+</div>
+
+<script>
+const boardEl = document.getElementById('board');
+const statusEl = document.getElementById('status');
+const resetBtn = document.getElementById('resetBtn');
+
+let grid, current;
+
+function init() {
+  grid = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
+  current = 'X';
+  renderBoard();
+  statusEl.textContent = "Turno: " + current;
+}
+
+function renderBoard() {
+  boardEl.innerHTML = '';
+  for(let i=0;i<3;i++){
+    for(let j=0;j<3;j++){
+      const c = document.createElement('div');
+      c.className='cell';
+      c.dataset.r=i; c.dataset.c=j;
+      c.textContent = grid[i][j]===' ' ? '' : grid[i][j];
+      c.addEventListener('click', onCellClick);
+      boardEl.appendChild(c);
+    }
+  }
+}
+
+function onCellClick(e){
+  const r=+e.currentTarget.dataset.r, c=+e.currentTarget.dataset.c;
+  if(grid[r][c]!==' ' || current!=='X') return;
+  makeMove(r,c,'X'); renderBoard();
+  if(isGameOver()) return;
+  setTimeout(()=>{ aiMove(); renderBoard(); },100);
+}
+
+function makeMove(r,c,p){
+  grid[r][c]=p;
+  current = (p==='X') ? 'O':'X';
+}
+
+function isFull(g){ for(let i=0;i<3;i++) for(let j=0;j<3;j++) if(g[i][j]===' ') return false; return true; }
+
+function checkWin(g,p){
+  for(let i=0;i<3;i++){
+    if(g[i][0]===p && g[i][1]===p && g[i][2]===p) return true;
+    if(g[0][i]===p && g[1][i]===p && g[2][i]===p) return true;
+  }
+  if(g[0][0]===p && g[1][1]===p && g[2][2]===p) return true;
+  if(g[0][2]===p && g[1][1]===p && g[2][0]===p) return true;
+  return false;
+}
+
+function isGameOver(){
+  if(checkWin(grid,'X')){ statusEl.textContent='X vince!'; return true; }
+  if(checkWin(grid,'O')){ statusEl.textContent='O vince!'; return true; }
+  if(isFull(grid)){ statusEl.textContent='Pareggio'; return true; }
+  statusEl.textContent="Turno: "+current;
+  return false;
+}
+
+function cloneGrid(g){ return [[g[0][0],g[0][1],g[0][2]],[g[1][0],g[1][1],g[1][2]],[g[2][0],g[2][1],g[2][2]]]; }
+
+function availableMoves(g){ const res=[]; for(let i=0;i<3;i++) for(let j=0;j<3;j++) if(g[i][j]===' ') res.push({r:i,c:j}); return res; }
+
+function evaluate(g){ if(checkWin(g,'X')) return 1; if(checkWin(g,'O')) return -1; return 0; }
+
+function minimaxNode(g, player){
+  const moves = availableMoves(g);
+  if(moves.length===0) return {val:evaluate(g)};
+  if(player==='X'){
+    let bestVal=-2, bestMove=null;
+    for(const m of moves){
+      const child=cloneGrid(g); child[m.r][m.c]='X';
+      const res=minimaxNode(child,'O');
+      if(res.val>bestVal){ bestVal=res.val; bestMove=m; if(bestVal===1) break; }
+    }
+    return {val:bestVal, move:bestMove};
+  }else{
+    let bestVal=2, bestMove=null;
+    for(const m of moves){
+      const child=cloneGrid(g); child[m.r][m.c]='O';
+      const res=minimaxNode(child,'X');
+      if(res.val<bestVal){ bestVal=res.val; bestMove=m; if(bestVal===-1) break; }
+    }
+    return {val:bestVal, move:bestMove};
+  }
+}
+
+function aiMove(){
+  if(isFull(grid) || checkWin(grid,'X') || checkWin(grid,'O')) return;
+  const res=minimaxNode(grid,'O');
+  if(res.move) makeMove(res.move.r,res.move.c,'O');
+}
+
+resetBtn.addEventListener('click', init);
+init();
+</script>
+</body>
+</html>
