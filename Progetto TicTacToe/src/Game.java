@@ -47,8 +47,12 @@ public class Game {
                 }
             }
 
-            // cambio turno
-            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            // cambio turno SENZA OPERATORE TERNARIO
+            if (currentPlayer == 'X') {
+                currentPlayer = 'O';
+            } else {
+                currentPlayer = 'X';
+            }
         }
 
         // gioco finito
