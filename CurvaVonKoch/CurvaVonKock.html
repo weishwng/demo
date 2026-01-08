@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>progetto curva koch giorno</title>
+</head>
+<body>
+    <canvas id="area" width="800" height="800"></canvas>
+<script>
+var canvas = document.getElementById('area');
+var ctx = canvas.getContext('2d');
+
+//classe per la tartaruga con i metodi chiesti
+class Turtle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.angolo = 0;
+        this.penna = true;
+    }
+
+    //alzo la penna per non scrivere
+    penUp() { this.penna = false; }
+    //abbasso la penna per scrivere
+    penDown() { this.penna = true; }
+
+    //giro a destra di tot gradi
+    turnRight(gradi) {
+        this.angolo += gradi;
+    }
+
+    //muovo la tartaruga avanti
+    move(l) {
+        //trasformo gradi in radianti per il calcolo
+        var r = this.angolo * Math.PI / 180;
+        var nuovaX = this.x + l * Math.cos(r);
+        var nuovaY = this.y + l * Math.sin(r);
+
+        if (this.penna) {
+            ctx.lineTo(nuovaX, nuovaY);
+        } else {
+            ctx.moveTo(nuovaX, nuovaY);
+        }
+
+        this.x = nuovaX;
+        this.y = nuovaY;
+    }
+}
+
+//creo la tartaruga in una posizione iniziale
+var t = new Turtle(200, 500);
+ctx.beginPath();
+
+//funzione ricorsiva per la curva di koch
+function koch(l, n) {
+    if (n == 0) {
+        //se n è zero faccio solo una riga dritta
+        t.move(l);
+    } else {
+        //divido il lato in tre
+        var latoPiccolo = l / 3;
+        
+        koch(latoPiccolo, n - 1);
+        t.turnRight(-60); //giro a sinistra per fare la punta
+        koch(latoPiccolo, n - 1);
+        t.turnRight(120); //giro a destra per tornare giu
+        koch(latoPiccolo, n - 1);
+        t.turnRight(-60); //mi rimetto dritto
+        koch(latoPiccolo, n - 1);
+    }
+}
+
+//giro di 120 gradi ogni volta per chiudere il triangolo
+var lunghezzaLato = 400;
+var n = 2; //livello di ricorsione per il test iniziale
+
+for (var i = 0; i < 3; i++) {
+    koch(lunghezzaLato, n);
+    t.turnRight(120);
+}
+
+ctx.stroke();
+
+</script>
+</body>
+</html>

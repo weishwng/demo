@@ -7,12 +7,12 @@ public class TreeNode {
     private Move moveFromParent;
 
     public TreeNode(Board b, char player) {
-        board = b;
+        this.board = b;
         this.player = player;
-        children = new TreeNode[9];
-        numChildren = 0;
-        value = 0;
-        moveFromParent = null;
+        this.children = new TreeNode[9];
+        this.numChildren = 0;
+        this.value = 0;
+        this.moveFromParent = null;
     }
 
     public Board getBoard() { return board; }

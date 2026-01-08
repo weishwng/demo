@@ -1,0 +1,17 @@
+:root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#9aa4b2;--panel:#071028}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto;background:linear-gradient(180deg,#071027,#0b1220);color:#e6eef8;padding:20px}
+.top{max-width:1200px;margin:0 auto 16px}
+.top h1{margin:0;font-weight:600}
+.top .muted{color:var(--muted);margin:4px 0 0}
+.grid{display:grid;grid-template-columns:1fr 420px;gap:16px;max-width:1200px;margin:0 auto}
+.left{background:var(--card);padding:12px;border-radius:10px;min-height:520px;display:flex;flex-direction:column}
+.toolbar{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+#editor{flex:1;width:100%;resize:none;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(180deg,#061226,#071b2b);padding:12px;color:#e6eef8;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;font-size:13px}
+.right{display:flex;flex-direction:column;gap:12px}
+.pane{background:var(--panel);padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+.pane h2{margin:0 0 8px;font-size:14px}
+.output,.ast,.trace{height:140px;overflow:auto;background:transparent;padding:8px;border-radius:6px;color:#cfe8ff;font-family:ui-monospace,monospace}
+button{background:var(--accent);border:none;color:white;padding:6px 10px;border-radius:8px;cursor:pointer}
+select{background:transparent;color:var(--muted);padding:6px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03)}
+.small{font-size:12px;color:var(--muted)}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>To‑Do Avanzato</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>To‑Do Avanzato</h1>
+    <form id="task-form" class="task-form">
+      <input id="task-input" placeholder="Aggiungi una nuova attività..." required />
+      <button type="submit">Aggiungi</button>
+    </form>
+
+    <div class="controls">
+      <select id="filter">
+        <option value="all">Tutte</option>
+        <option value="active">Attive</option>
+        <option value="completed">Completate</option>
+      </select>
+      <button id="clear-completed">Pulisci completate</button>
+    </div>
+
+    <ul id="task-list" class="task-list"></ul>
+  </main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

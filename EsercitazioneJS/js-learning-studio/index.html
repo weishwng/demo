@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JS Learning Studio — MVP</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>JS Learning Studio</h1>
+    <p class="muted">Scrivi, esegui e visualizza come JavaScript funziona — editor + sandbox + AST</p>
+  </header>
+
+  <main class="grid">
+    <section class="left">
+      <div class="toolbar">
+        <select id="examples"></select>
+        <button id="run">Esegui</button>
+        <button id="format">Formatta</button>
+      </div>
+      <textarea id="editor" spellcheck="false">// Esempio: closure
+function makeCounter(){
+  let n = 0;
+  return function(){
+    n += 1;
+    console.log('count', n);
+    return n;
+  }
+}
+const c = makeCounter();
+c();
+c();
+</textarea>
+    </section>
+
+    <section class="right">
+      <div class="pane">
+        <h2>Output</h2>
+        <pre id="output" class="output">— output runtime —</pre>
+      </div>
+
+      <div class="pane">
+        <h2>AST (Acorn)</h2>
+        <pre id="ast" class="ast">— ast —</pre>
+      </div>
+
+      <div class="pane">
+        <h2>Trace</h2>
+        <pre id="trace" class="trace">— trace —</pre>
+      </div>
+    </section>
+  </main>
+
+  <!-- sandbox iframe (hidden) -->
+  <iframe id="sandbox" sandbox="allow-scripts" style="display:none"></iframe>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
